@@ -8,7 +8,19 @@
 
 ## References
 https://blog.paragoncyber.io/docs/gentoo-zfs/setup/  
-https://wiki.gentoo.org/wiki/Handbook:AMD64
+https://wiki.gentoo.org/wiki/Handbook:AMD64  
+
+https://www.reddit.com/r/Gentoo/comments/s2sww0/elan1200_touchpad_problems/  
+https://pclosmag.com/html/Issues/201108/page01.html  
+https://github.com/s-light/ASUS-ZenBook-Pro-Duo-UX581GV/blob/master/research_touchpen.md  
+https://forums.gentoo.org/viewtopic-t-1061944-start-0.html  
+https://www.kernel.org/doc/html/v5.0/admin-guide/pm/cpuidle.html  
+https://metebalci.com/blog/a-minimum-complete-tutorial-of-cpu-power-management-c-states-and-p-states/  
+https://www.reddit.com/r/linuxhardware/comments/da4zy9/does_anyone_know_how_the_software_support_will_be/  
+https://davejansen.com/asus-zenbook-duo-and-fedora-linux/  
+https://askubuntu.com/questions/762643/change-brightness-on-asus-laptop  
+https://github.com/lakinduakash/asus-screenpad-control  
+https://github.com/Plippo/asus-wmi-screenpad  
 
 ## Prepare the system disk
 
