@@ -220,6 +220,7 @@ https://wiki.gentoo.org/wiki/Kernel/Gentoo_Kernel_Configuration_Guide#Compressed
 https://wiki.gentoo.org/wiki/QEMU  
 https://wiki.gentoo.org/wiki/Bluetooth  
 https://wiki.gentoo.org/wiki/Docker 
+https://docs.strongswan.org/docs/5.9/install/kernelModules.html  
 
 ## Install ZFS to the new system
 
