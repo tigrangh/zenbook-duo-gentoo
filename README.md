@@ -21,6 +21,7 @@ https://davejansen.com/asus-zenbook-duo-and-fedora-linux/
 https://askubuntu.com/questions/762643/change-brightness-on-asus-laptop  
 https://github.com/lakinduakash/asus-screenpad-control  
 https://github.com/Plippo/asus-wmi-screenpad  
+https://wiki.gentoo.org/wiki/Webcam  
 
 ## Prepare the system disk
 
