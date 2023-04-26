@@ -325,5 +325,12 @@ ACTION=="add", SUBSYSTEM=="backlight", KERNEL=="intel_backlight", RUN+="/bin/chm
     sh -c 'ENABLED=$(xinput --list-props "AT Translated Set 2 keyboard" | grep "Device Enabled" | awk "{print \$4}"); if [ "$ENABLED" == "1" ]; then xinput disable "AT Translated Set 2 keyboard"; xinput disable "ELAN1200:00 04F3:3168 Touchpad"; else xinput enable "AT Translated Set 2 keyboard"; xinput enable "ELAN1200:00 04F3:3168 Touchpad"; fi'
     </command>
     </action>
+  </keybind>  
+  <keybind key="XF86Launch6">
+    <action name="Execute">
+    <command>
+    sh -c 'ZEROPOS=$(xrandr | grep eDP-1 | awk "{print \$4}" | grep -o "+0+0"); if [ -z "$ZEROPOS" ]; then xrandr --output eDP-1 --auto --pos 0x0; xdotool mousemove 960 540; else xrandr --output eDP-1 --auto --pos 1920x0; xdotool mousemove 2880 540; fi; echo $([[ -z "$ZEROPOS" ]])'
+    </command>
+    </action>
   </keybind>
 ```
