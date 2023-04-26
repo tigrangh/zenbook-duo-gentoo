@@ -264,3 +264,66 @@ Don't forget to do the following before rebooting
 zfs set mountpoint=/ zentoo/root
 zpool export zentoo
 ```
+
+## Appendix
+
+### xinitrc
+
+```
+cat /etc/X11/xinit/xinitrc
+xrandr --output eDP-1 --auto --panning 3840x1080 --output DP-3 --auto --scale 2x2.12 --same-as eDP-1 --dpi 168 #144
+xrandr --setmonitor eDP-1-1 1920/309x1080/174+0+0 eDP-1
+xrandr --setmonitor eDP-1-2 1920/309x1080/174+1920+0 none
+
+export GDK_DPI_SCALE=1.75# 1.5
+
+exec dbus-launch openbox-session
+```
+
+### screens brightness control related
+
+```
+cat /etc/udev/rules.d/99-asus.rules 
+ACTION=="add", SUBSYSTEM=="leds", KERNEL=="asus::screenpad", RUN+="/bin/chmod a+w /sys/class/leds/%k/brightness"
+ACTION=="add", SUBSYSTEM=="backlight", KERNEL=="intel_backlight", RUN+="/bin/chmod a+w /sys/class/backlight/%k/brightness"
+```
+
+### openbox hotkeys
+
+```
+  <keybind key="XF86MonBrightnessDown">
+    <action name="Execute">
+    <command>
+    sh -c 'BRIGHTNESS=$(cat /sys/class/backlight/intel_backlight/brightness); BRIGHTNESS=$((BRIGHTNESS - 500)); BRIGHTNESS=$((BRIGHTNESS > 0 ? BRIGHTNESS : 0)); echo "$BRIGHTNESS" > /sys/class/backlight/intel_backlight/brightness'
+    </command>
+    </action>
+  </keybind>
+  <keybind key="XF86MonBrightnessUp">
+    <action name="Execute">
+    <command>
+    sh -c 'BRIGHTNESS=$(cat /sys/class/backlight/intel_backlight/brightness); BRIGHTNESS=$((BRIGHTNESS + 500)); BRIGHTNESS=$((19200 > BRIGHTNESS ? BRIGHTNESS : 19200)); echo "$BRIGHTNESS" > /sys/class/backlight/intel_backlight/brightness'
+    </command>
+    </action>
+  </keybind>
+  <keybind key="W-F4">
+    <action name="Execute">
+    <command>
+    sh -c 'BRIGHTNESS=$(cat /sys/class/leds/asus::screenpad/brightness); BRIGHTNESS=$((BRIGHTNESS - 10)); BRIGHTNESS=$((BRIGHTNESS > 0 ? BRIGHTNESS : 0)); echo "$BRIGHTNESS" > /sys/class/leds/asus::screenpad/brightness'
+    </command>
+    </action>
+  </keybind>
+  <keybind key="W-F5">
+    <action name="Execute">
+    <command>
+    sh -c 'BRIGHTNESS=$(cat /sys/class/leds/asus::screenpad/brightness); BRIGHTNESS=$((BRIGHTNESS + 10)); BRIGHTNESS=$((255 > BRIGHTNESS ? BRIGHTNESS : 255)); echo "$BRIGHTNESS" > /sys/class/leds/asus::screenpad/brightness'
+    </command>
+    </action>
+  </keybind>
+  <keybind key="XF86Launch7">
+    <action name="Execute">
+    <command>
+    sh -c 'ENABLED=$(xinput --list-props "AT Translated Set 2 keyboard" | grep "Device Enabled" | awk "{print \$4}"); if [ "$ENABLED" == "1" ]; then xinput disable "AT Translated Set 2 keyboard"; xinput disable "ELAN1200:00 04F3:3168 Touchpad"; else xinput enable "AT Translated Set 2 keyboard"; xinput enable "ELAN1200:00 04F3:3168 Touchpad"; fi'
+    </command>
+    </action>
+  </keybind>
+```
