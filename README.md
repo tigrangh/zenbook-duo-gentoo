@@ -277,13 +277,22 @@ xrandr --dpi 168
 xrandr --setmonitor Virt1 1920/309x1080/174+0+0 DP-3
 xrandr --setmonitor Virt2 1920/309x1080/174+1920+0 none
 
-xinput set-prop "ELAN9008:00 04F3:2D55" "Coordinate Transformation Matrix" 0.5 0 0 0 0.989192 0 0 0 1
-xinput set-prop "ELAN9008:00 04F3:2D55 Stylus Pen (0)" "Coordinate Transformation Matrix" 0.5 0 0 0 0.989192 0 0 0 1
 xinput disable "ELAN9008:00 04F3:2D55"
 
 export GDK_DPI_SCALE=1.75# 1.5
 
 exec dbus-launch openbox-session
+```
+
+```
+cat /usr/share/X11/xorg.conf.d/41-inputs.conf 
+Section "InputClass"
+	Identifier "ELAN9008:00 04F3:2D55"
+	# automatically matches for "ELAN9008:00 04F3:2D55 Stylus Pen (0)" as well
+	MatchProduct "ELAN9008:00 04F3:2D55"
+        Driver "libinput"
+        Option "TransformationMatrix" "0.5 0 0 0 0.989192 0 0 0 1"
+EndSection
 ```
 
 ### screens brightness control related
