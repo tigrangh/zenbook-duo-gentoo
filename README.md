@@ -271,9 +271,11 @@ zpool export zentoo
 
 ```
 cat /etc/X11/xinit/xinitrc
-xrandr --output eDP-1 --auto --panning 3840x1080 --output DP-3 --auto --scale 2x2.12 --same-as eDP-1 --dpi 168 #144
-xrandr --setmonitor eDP-1-1 1920/309x1080/174+0+0 eDP-1
-xrandr --setmonitor eDP-1-2 1920/309x1080/174+1920+0 none
+xrandr --output eDP-1 --auto --pos 0x0 --primary
+xrandr --output DP-3 --auto --pos 0x0 --scale 2x2.12
+xrandr --dpi 168
+xrandr --setmonitor Virt1 1920/309x1080/174+0+0 DP-3
+xrandr --setmonitor Virt2 1920/309x1080/174+1920+0 none
 
 export GDK_DPI_SCALE=1.75# 1.5
 
@@ -325,12 +327,15 @@ ACTION=="add", SUBSYSTEM=="backlight", KERNEL=="intel_backlight", RUN+="/bin/chm
     sh -c 'ENABLED=$(xinput --list-props "AT Translated Set 2 keyboard" | grep "Device Enabled" | awk "{print \$4}"); if [ "$ENABLED" == "1" ]; then xinput disable "AT Translated Set 2 keyboard"; xinput disable "ELAN1200:00 04F3:3168 Touchpad"; xinput disable "ELAN9009:00 04F3:2C1B"; else xinput enable "AT Translated Set 2 keyboard"; xinput enable "ELAN1200:00 04F3:3168 Touchpad"; xinput enable "ELAN9009:00 04F3:2C1B"; fi'
     </command>
     </action>
-  </keybind>  
+  </keybind>
   <keybind key="XF86Launch6">
     <action name="Execute">
     <command>
     sh -c 'ZEROPOS=$(xrandr | grep eDP-1 | awk "{print \$4}" | grep -o "+0+0"); if [ -z "$ZEROPOS" ]; then xrandr --output eDP-1 --auto --pos 0x0; xdotool mousemove 960 540; else xrandr --output eDP-1 --auto --pos 1920x0; xdotool mousemove 2880 540; fi; echo $([[ -z "$ZEROPOS" ]])'
     </command>
     </action>
+  </keybind>
+  <keybind key="W-d">
+    <action name="ToggleShowDesktop"/>
   </keybind>
 ```
