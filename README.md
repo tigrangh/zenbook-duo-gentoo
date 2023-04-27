@@ -335,7 +335,4 @@ ACTION=="add", SUBSYSTEM=="backlight", KERNEL=="intel_backlight", RUN+="/bin/chm
     </command>
     </action>
   </keybind>
-  <keybind key="W-d">
-    <action name="ToggleShowDesktop"/>
-  </keybind>
 ```
