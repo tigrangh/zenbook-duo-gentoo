@@ -277,6 +277,10 @@ xrandr --dpi 168
 xrandr --setmonitor Virt1 1920/309x1080/174+0+0 DP-3
 xrandr --setmonitor Virt2 1920/309x1080/174+1920+0 none
 
+xinput set-prop "ELAN9008:00 04F3:2D55" "Coordinate Transformation Matrix" 0.5 0 0 0 0.989192 0 0 0 1
+xinput set-prop "ELAN9008:00 04F3:2D55 Stylus Pen (0)" "Coordinate Transformation Matrix" 0.5 0 0 0 0.989192 0 0 0 1
+xinput disable "ELAN9008:00 04F3:2D55"
+
 export GDK_DPI_SCALE=1.75# 1.5
 
 exec dbus-launch openbox-session
@@ -321,17 +325,24 @@ ACTION=="add", SUBSYSTEM=="backlight", KERNEL=="intel_backlight", RUN+="/bin/chm
     </command>
     </action>
   </keybind>
-  <keybind key="XF86Launch7">
+<keybind key="Print">
     <action name="Execute">
     <command>
-    sh -c 'ENABLED=$(xinput --list-props "AT Translated Set 2 keyboard" | grep "Device Enabled" | awk "{print \$4}"); if [ "$ENABLED" == "1" ]; then xinput disable "AT Translated Set 2 keyboard"; xinput disable "ELAN1200:00 04F3:3168 Touchpad"; xinput disable "ELAN9009:00 04F3:2C1B"; else xinput enable "AT Translated Set 2 keyboard"; xinput enable "ELAN1200:00 04F3:3168 Touchpad"; xinput enable "ELAN9009:00 04F3:2C1B"; fi'
+    sh -c 'ENABLED=$(xinput --list-props "ELAN9008:00 04F3:2D55" | grep "Device Enabled" | awk "{print \$4}"); if [ "$ENABLED" == "1" ]; then xinput disable "ELAN9008:00 04F3:2D55"; else xinput enable "ELAN9008:00 04F3:2D55"; fi'
     </command>
     </action>
   </keybind>
   <keybind key="XF86Launch6">
     <action name="Execute">
     <command>
-    sh -c 'ZEROPOS=$(xrandr | grep eDP-1 | awk "{print \$4}" | grep -o "+0+0"); if [ -z "$ZEROPOS" ]; then xrandr --output eDP-1 --auto --pos 0x0; xdotool mousemove 960 540; else xrandr --output eDP-1 --auto --pos 1920x0; xdotool mousemove 2880 540; fi; echo $([[ -z "$ZEROPOS" ]])'
+    sh -c 'ZEROPOS=$(xrandr | grep eDP-1 | awk "{print \$4}" | grep -o "+0+0"); if [ -z "$ZEROPOS" ]; then xrandr --output eDP-1 --auto --pos 0x0; xdotool mousemove 960 540; xinput set-prop "ELAN9008:00 04F3:2D55" "Coordinate Transformation Matrix" 0.5 0 0 0 0.989192 0 0 0 1; xinput set-prop "ELAN9008:00 04F3:2D55 Stylus Pen (0)" "Coordinate Transformation Matrix" 0.5 0 0 0 0.989192 0 0 0 1; else xrandr --output eDP-1 --auto --pos 1920x0; xdotool mousemove 2880 540; xinput set-prop "ELAN9008:00 04F3:2D55" "Coordinate Transformation Matrix" 0.5 0 0.5 0 0.989192 0 0 0 1; xinput set-prop "ELAN9008:00 04F3:2D55 Stylus Pen (0)" "Coordinate Transformation Matrix" 0.5 0 0.5 0 0.989192 0 0 0 1; fi; echo $([[ -z "$ZEROPOS" ]])'
+    </command>
+    </action>
+  </keybind>
+  <keybind key="XF86Launch7">
+    <action name="Execute">
+    <command>
+    sh -c 'ENABLED=$(xinput --list-props "AT Translated Set 2 keyboard" | grep "Device Enabled" | awk "{print \$4}"); if [ "$ENABLED" == "1" ]; then xinput disable "AT Translated Set 2 keyboard"; xinput disable "ELAN1200:00 04F3:3168 Touchpad"; xinput disable "ELAN9009:00 04F3:2C1B"; else xinput enable "AT Translated Set 2 keyboard"; xinput enable "ELAN1200:00 04F3:3168 Touchpad"; xinput enable "ELAN9009:00 04F3:2C1B"; fi'
     </command>
     </action>
   </keybind>
