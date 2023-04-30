@@ -264,6 +264,15 @@ CONFIG_SND_SOC_HDAC_HDMI=y
 CONFIG_SND_SOC_HDAC_HDA=y
 ```
 
+bluetooth related
+https://wiki.gentoo.org/wiki/Bluetooth_headset#ALSA_.2B_Bluez_5  
+https://wiki.gentoo.org/wiki/Bluetooth  
+
+```
+CONFIG_BT_RFCOMM=m
+CONFIG_INPUT_UINPUT=m
+```
+
 #### I prefer to have more or less capable kernel
 
 https://wiki.gentoo.org/wiki/Nfs-utils  
@@ -352,6 +361,76 @@ EndSection
 cat /etc/udev/rules.d/99-asus.rules 
 ACTION=="add", SUBSYSTEM=="leds", KERNEL=="asus::screenpad", RUN+="/bin/chmod a+w /sys/class/leds/%k/brightness"
 ACTION=="add", SUBSYSTEM=="backlight", KERNEL=="intel_backlight", RUN+="/bin/chmod a+w /sys/class/backlight/%k/brightness"
+```
+
+### bluetooth headset
+```
+cat /etc/conf.d/bluealsa 
+# Config file for /etc/init.d/bluealsa
+
+# Allow additional options to be set
+BLUEALSA_CONF="-i hci0 -p a2dp-sink -p a2dp-source -p hfp-ag -p hfp-hf -p hsp-ag -p hsp-hs"
+```
+
+```
+cat ~/.asoundrc
+pcm.!default built_in
+#pcm.!default blue_head
+#pcm.!default blue_speaker
+
+pcm.blue_speaker {
+  hint.show on
+  hint.description "Bluetooth Music"
+  
+  type asym
+  playback.pcm {
+    type plug
+    slave.pcm "bluealsa:PROFILE=a2dp"
+  }
+
+  capture.pcm {
+    type plug
+    slave.pcm "hw:sofhdadsp,7"
+  }
+}
+
+pcm.blue_head {
+  hint.show on
+  hint.description "Bluetooth Headset"
+
+  type asym
+  playback.pcm {
+    type plug
+    slave.pcm "bluealsa:PROFILE=sco"
+  }
+
+  capture.pcm {
+    type plug
+    slave.pcm "bluealsa:PROFILE=sco"
+  }
+}
+
+pcm.built_in {
+  hint.show on
+  hint.description "Built in"
+
+  type asym
+  playback.pcm {
+    type plug
+    slave.pcm {
+      type dmix
+      ipc_key 8626696
+      ipc_gid 18
+      ipc_perm 0660
+      slave.pcm "hw:sofhdadsp,0"
+    }
+  }
+
+  capture.pcm {
+    type plug
+    slave.pcm "hw:sofhdadsp,7"
+  }
+}
 ```
 
 ### openbox hotkeys
