@@ -273,6 +273,18 @@ CONFIG_BT_RFCOMM=m
 CONFIG_INPUT_UINPUT=m
 ```
 
+SD card reader
+https://forums.gentoo.org/viewtopic-t-1006246-start-0.html  
+
+```
+CONFIG_MISC_RTSX=m
+CONFIG_MISC_RTSX_USB=m
+CONFIG_MMC=m
+CONFIG_MMC_BLOCK=m
+CONFIG_MMC_BLOCK_MINORS=8
+CONFIG_MMC_REALTEK_USB=m
+```
+
 #### I prefer to have more or less capable kernel
 
 https://wiki.gentoo.org/wiki/Nfs-utils  
