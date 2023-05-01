@@ -365,6 +365,13 @@ Section "InputClass"
         Driver "libinput"
         Option "TransformationMatrix" "0.5 0 0 0 0.989192 0 0 0 1"
 EndSection
+
+Section "InputClass"
+        Identifier "this is terrible (AVRCP)"
+        MatchProduct "this is terrible (AVRCP)"
+        Driver "libinput"
+        Option "Ignore" "true"
+EndSection
 ```
 
 ### screens brightness control related
