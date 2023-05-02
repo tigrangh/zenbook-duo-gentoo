@@ -326,7 +326,11 @@ total 26392
 -rwxr-xr-x 1 root root 15609888 Apr 21 12:52 vmlinuz.efi
 ```
 ```
-efibootmgr --create --disk /dev/nvme0n1 --part 1 --label "Gentoo 0" --loader "\EFI\gentoo\vmlinuz.efi" --unicode "root=ZFS=zentoo/root ro initrd=\EFI\gentoo\initramfs.img"
+efibootmgr --create --disk /dev/nvme0n1 --part 1 --label "Gentoo Safe" --loader "\EFI\gentoo\vmlinuz-safe.efi" --unicode "root=ZFS=zentoo/root ro initrd=\EFI\gentoo\initramfs-safe.img"
+
+efibootmgr --create --disk /dev/nvme0n1 --part 1 --label "Gentoo Unsafe" --loader "\EFI\gentoo\vmlinuz-unsafe.efi" --unicode "root=ZFS=zentoo/root ro initrd=\EFI\gentoo\initramfs-unsafe.img resume=UUID=9acc2805-c237-4920-859c-11ca1de1e6fe rd.luks.uuid=b1100639-7439-4c85-898c-e553d148ebc7"
+
+efibootmgr --create --disk /dev/nvme0n1 --part 1 --label "Gentoo" --loader "\EFI\gentoo\vmlinuz.efi" --unicode "root=ZFS=zentoo/root ro initrd=\EFI\gentoo\initramfs.img resume=UUID=9acc2805-c237-4920-859c-11ca1de1e6fe rd.luks.uuid=b1100639-7439-4c85-898c-e553d148ebc7"
 ```
 
 ### Finally follow the guide till the end
