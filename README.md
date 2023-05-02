@@ -93,9 +93,9 @@ zpool set bootfs=zentoo/root zentoo
 
 _Start with the following make.conf customizations_
 ```
-USE="X elogind bluetooth"
+USE="X elogind bluetooth alsa"
 INPUT_DEVICES="libinput"
-VIDEO_CARDS="intel i965 iris dummy alsa"
+VIDEO_CARDS="intel i965 iris dummy"
 ```
 
 > **Note**  
