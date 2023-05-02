@@ -10,6 +10,7 @@
 https://blog.paragoncyber.io/docs/gentoo-zfs/setup/  
 https://wiki.gentoo.org/wiki/Handbook:AMD64  
 
+### kernel related
 https://www.reddit.com/r/Gentoo/comments/s2sww0/elan1200_touchpad_problems/  
 https://pclosmag.com/html/Issues/201108/page01.html  
 https://github.com/s-light/ASUS-ZenBook-Pro-Duo-UX581GV/blob/master/research_touchpen.md  
@@ -22,6 +23,10 @@ https://askubuntu.com/questions/762643/change-brightness-on-asus-laptop
 https://github.com/lakinduakash/asus-screenpad-control  
 https://github.com/Plippo/asus-wmi-screenpad  
 https://wiki.gentoo.org/wiki/Webcam  
+
+### luks related
+https://wiki.gentoo.org/wiki/Swap  
+https://wiki.gentoo.org/wiki/Dm-crypt#Creating_an_encrypted_storage_platform  
 
 ## Prepare the system disk
 
@@ -313,8 +318,9 @@ Follow the handbook to install the kernel to /boot
 
 ### we create the initramfs
 ```
-dracut -H --kver 6.1.19-gentoo --force
+dracut -a crypt -H --kver 6.1.19-gentoo --force
 ```
+crypt module is required for LUKS encrypted swap
 
 ### Prepare EFI boot files
 
@@ -322,6 +328,10 @@ Granted that /boot is mounted to the UEFI partition
 ```
 ls -l /boot/EFI/gentoo/
 total 26392
+-rwxr-xr-x 1 root root 11407542 Apr 21 12:53 initramfs-safe.img
+-rwxr-xr-x 1 root root 15609888 Apr 21 12:52 vmlinuz-safe.efi
+-rwxr-xr-x 1 root root 11407542 Apr 21 12:53 initramfs-unsafe.img
+-rwxr-xr-x 1 root root 15609888 Apr 21 12:52 vmlinuz-unsafe.efi
 -rwxr-xr-x 1 root root 11407542 Apr 21 12:53 initramfs.img
 -rwxr-xr-x 1 root root 15609888 Apr 21 12:52 vmlinuz.efi
 ```
@@ -333,12 +343,51 @@ efibootmgr --create --disk /dev/nvme0n1 --part 1 --label "Gentoo Unsafe" --loade
 efibootmgr --create --disk /dev/nvme0n1 --part 1 --label "Gentoo" --loader "\EFI\gentoo\vmlinuz.efi" --unicode "root=ZFS=zentoo/root ro initrd=\EFI\gentoo\initramfs.img resume=UUID=9acc2805-c237-4920-859c-11ca1de1e6fe rd.luks.uuid=b1100639-7439-4c85-898c-e553d148ebc7"
 ```
 
+UUID values are explained below in LUKS Swap section
+
 ### Finally follow the guide till the end
 
 Don't forget to do the following before rebooting
 ```
 zfs set mountpoint=/ zentoo/root
 zpool export zentoo
+```
+## LUKS Swap
+
+### To setup
+```
+cryptsetup -c aes-xts-plain64 -s 512 -y luksFormat /dev/nvme0n1p2
+```
+
+```
+cryptsetup luksOpen /dev/nvme0n1p2 luksSwap
+```
+
+```
+mkswap /dev/mapper/luksSwap
+```
+The above `mkswap` command returns `9acc2805-c237-4920-859c-11ca1de1e6fe`, which is used for kernel `resume=UUID=` parameter. 
+And the UUID of the `/dev/nvme0n1p2` device is used for `rd.luks.uuid=` kernel parameter.  
+
+Have the following in `/etc/fstab`
+```
+UUID=9acc2805-c237-4920-859c-11ca1de1e6fe  none swap    sw      0 0
+```
+
+No `/etc/crypttab` is required, since LUKS open is done by initramdrive.
+
+### Info
+
+```
+zentoo ~ # blkid
+/dev/nvme0n1p3: LABEL="zentoo" UUID="1772953905829811206" UUID_SUB="5366784844978955586" BLOCK_SIZE="4096" TYPE="zfs_member" PARTLABEL="rootfs" PARTUUID="f7adf027-71de-4076-b136-8cda36fed169"
+/dev/nvme0n1p1: UUID="577C-9AE7" BLOCK_SIZE="512" TYPE="vfat" PARTLABEL="esp" PARTUUID="b769252e-f4a7-4be5-a94c-feddbd32fc6a"
+/dev/nvme0n1p2: UUID="b1100639-7439-4c85-898c-e553d148ebc7" TYPE="crypto_LUKS" PARTLABEL="swap" PARTUUID="57cf2bee-83cb-42b8-8c2c-855e5a078f27"
+/dev/mapper/luks-b1100639-7439-4c85-898c-e553d148ebc7: UUID="9acc2805-c237-4920-859c-11ca1de1e6fe" TYPE="swap"
+```
+```
+zentoo ~ # cat /etc/fstab 
+UUID=9acc2805-c237-4920-859c-11ca1de1e6fe  none swap    sw      0 0
 ```
 
 ## Appendix
