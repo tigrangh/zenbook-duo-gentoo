@@ -378,6 +378,9 @@ No `/etc/crypttab` is required, since LUKS open is done by initramdrive.
 
 ### Info
 
+https://aj.immo/2021/11/gentoo-with-efistub-encrypted-btrfs/  
+This was helpful.
+
 ```
 zentoo ~ # blkid
 /dev/nvme0n1p3: LABEL="zentoo" UUID="1772953905829811206" UUID_SUB="5366784844978955586" BLOCK_SIZE="4096" TYPE="zfs_member" PARTLABEL="rootfs" PARTUUID="f7adf027-71de-4076-b136-8cda36fed169"
