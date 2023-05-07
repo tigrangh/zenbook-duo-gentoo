@@ -398,18 +398,20 @@ UUID=9acc2805-c237-4920-859c-11ca1de1e6fe  none swap    sw      0 0
 ### xinitrc
 
 ```
-cat /etc/X11/xinit/xinitrc
-xrandr --output eDP-1 --auto --pos 0x0 --primary
+xrandr --output eDP-1 --auto --pos 0x0 --primary --scale 0.9999x0.9999
 xrandr --output DP-3 --auto --pos 0x0 --scale 2x2.12
+xrandr --output HDMI-1 --auto --right-of eDP-1
 xrandr --dpi 168
 xrandr --setmonitor Virt1 1920/309x1080/174+0+0 DP-3
 xrandr --setmonitor Virt2 1920/309x1080/174+1920+0 none
 
 xinput disable "ELAN9008:00 04F3:2D55"
 
+xrdb -merge ~/.Xresources
+
 export GDK_DPI_SCALE=1.75# 1.5
 
-exec dbus-launch openbox-session
+exec dbus-launch --exit-with-session openbox-session
 ```
 
 ```
