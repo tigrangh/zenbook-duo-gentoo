@@ -269,7 +269,7 @@ CONFIG_SND_SOC_HDAC_HDMI=y
 CONFIG_SND_SOC_HDAC_HDA=y
 ```
 
-bluetooth related
+bluetooth related  
 https://wiki.gentoo.org/wiki/Bluetooth_headset#ALSA_.2B_Bluez_5  
 https://wiki.gentoo.org/wiki/Bluetooth  
 
