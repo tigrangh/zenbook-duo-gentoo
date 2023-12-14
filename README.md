@@ -108,7 +108,7 @@ Follow the official Gentoo AMD64 Handbook, until the stage3 is ready
 It is a good moment to install some essential packges
 
 ```
-emerge -av bash-completion efibootmgr dracut vim cpuid2cpuflags app-misc/mc dosfstools usbutils pciutils lshw wpa_supplicant net-wireless/iw net-dns/bind-tools
+emerge -av bash-completion efibootmgr dracut vim cpuid2cpuflags app-misc/mc dosfstools usbutils pciutils lshw wpa_supplicant net-wireless/iw net-dns/bind-tools cryptsetup
 ```
 
 * __cpuid2cpuflags__ should be the first package installed before anything else, to set the native CPU flags for the system
