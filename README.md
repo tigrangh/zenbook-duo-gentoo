@@ -353,7 +353,7 @@ UUID values are explained below in LUKS Swap section
 
 **quick note** to have dracut-crypt-ssh built into initramfs we would do
 ```
-efibootmgr --create --disk /dev/nvme0n1 --part 1 --label "Gentoo Safe" --loader "\EFI\gentoo\vmlinuz-safe.efi" --unicode "root=ZFS=zentoo/root ro initrd=\EFI\gentoo\initramfs-safe.img rd.neednet=1 ip=dhcp"
+efibootmgr --create --disk /dev/nvme0n1 --part 1 --label "Gentoo Safe" --loader "\EFI\gentoo\vmlinuz-safe.efi" --unicode "root=ZFS=zentoo/root ro initrd=\EFI\gentoo\initramfs-safe.img rd.neednet=1 ip=:::::eth0:dhcp"
 ```
 
 ### Finally follow the guide till the end
